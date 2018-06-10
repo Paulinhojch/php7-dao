@@ -1,5 +1,6 @@
 <?php
 
+
 class Sql extends PDO {
 
 	private $conn;
@@ -23,7 +24,7 @@ class Sql extends PDO {
 
 	private function setParam($statment, $key, $value){
 
-		$statment->bindParam($key, $value);
+		$statment->bindParam($statment, $key, $value);
 	}
 
 
