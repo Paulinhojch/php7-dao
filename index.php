@@ -4,19 +4,11 @@
 */
 require_once("config.php");
 
-/*$sql = new Sql();
 
-$usuarios = $sql->select("SELECT * FROM tb_usuarios");
+$usuario = new Usuario();
+$usuario->login("sa","101125");
 
-echo json_encode($usuarios);*/
-
-
-$root = new Usuario();
-
-$root->loadById(2);
-
-echo $root;
-
+echo $usuario;
 
 
 ?>
