@@ -64,12 +64,7 @@ public function loadById($id){
 
 	if (count($result) > 0){
 
-		$row = $result[0];
-
-		$this->setId($row['id']);
-		$this->setUsuario($row['usuario']);
-		$this->setSenha($row['senha']);
-		$this->setDtCadastro($row['data_cadastro']);
+		$this->setData($result[0]);
 	}
 }
 
@@ -96,12 +91,7 @@ public function login($login, $pass){
 	$result = $sql->select("SELECT * FROM tb_usuarios WHERE usuario = '$login' AND senha = '$pass'");
 	if (count($result) > 0){
 
-		$row = $result[0];
-
-		$this->setId($row['id']);
-		$this->setUsuario($row['usuario']);
-		$this->setSenha($row['senha']);
-		$this->setDtCadastro($row['data_cadastro']);
+		$this->setData($result[0]);
 	}
 	else{
 		throw new Exception("Invalido");
@@ -110,10 +100,56 @@ public function login($login, $pass){
 
 }
 
-public function insert(){
+
+
+
+public function setData($data){
+
+	$this->setId($data['id']);
+	$this->setUsuario($data['usuario']);
+	$this->setSenha($data['senha']);
+	$this->setDtCadastro($data['data_cadastro']);
+
+}
+
+
+public function update($login, $password){
+
+	$this->setUsuario($login);
+	$this->setSenha($password);
+
 	$sql = new Sql();
 
-	$result = $sql->("CALL sp_usuarios_insert(:LOGIN, :PASSWORD)", array);
+	$sql->query("UPDATE tb_usuarios SET usuario = :LOGIN, senha = :PASSWORD WHERE id = :ID", array(
+	":LOGIN"=>$this->getUsuario(),
+	":PASSWORD"=>$this->getSenha(),
+	":ID"=>$this->getId()
+	));
+}
+
+
+public function delete(){
+
+	$sql = new Sql();
+
+	$sql->query("DELETE FROM tb_usuarios WHERE id = :ID", array(
+	":ID"=>$this->getId()
+	));
+
+}
+
+
+public function insert(){
+
+	$sql = new Sql();
+
+	$result = $sql->select("CALL sp_usuarios_insert(:LOGIN, :PASSWORD)",array(
+		":LOGIN"=>$this->getUsuario(),
+		":PASSWORD"=>$this->getSenha()
+	));
+	if (count($result) > 0){
+		$this->setData($result[0]);
+	}
 }
 
 

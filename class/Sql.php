@@ -12,19 +12,20 @@ class Sql extends PDO {
 	}
 
 
-	private function setParams($statment, $parameters = array()){
+	private function setParams($statement, $parameters = array()){
 
 		foreach ($parameters as $key => $value) {
 			
-			$statment->bindParam($key, $value);
+			//$statment->bindParam($statment, $key, $value);
+			$this->setParam($statement, $key, $value);
 		}
 
 	}
 
 
-	private function setParam($statment, $key, $value){
+	private function setParam($statement, $key, $value){
 
-		$statment->bindParam($statment, $key, $value);
+		$statement->bindParam($key, $value);
 	}
 
 
@@ -40,7 +41,7 @@ class Sql extends PDO {
 	}
 
 
-	public function select($rawquery, $params = array()):array{
+	public function select($rawquery, $params = array()){
 
 		$stmt = $this->query($rawquery, $params);
 
